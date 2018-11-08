@@ -1,37 +1,47 @@
+// TODO: get version number?
+
 const readline = require('readline');
 var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-const workingDirPath = "../EquiTrack/";
-const simpleGit = require("simple-git")(workingDirPath);
+const workingDirPath = '../EquiTrack/';
+const simpleGit = require('simple-git')(workingDirPath);
 
 const fs = require('fs');
 const cheerio = require('cheerio');
+
+async function getPathToReleaseNotes() {
+    return new Promise(resolve => {
+        rl.question('Where are your release notes? ', (answer) => {
+            resolve(answer);
+        });
+    });
+}
 
 async function getShouldClearReleaseNotes() {
     return new Promise(resolve => {
         rl.question('Would you like to clear current content from release-notes? ', (answer) => {
             if(answer.toLocaleLowerCase() === 'y') 
             {
-                console.log("ok! clearing now.");
-                resolve();
+                console.log('ok! clearing now.');
+                resolve(true);
             }
             else 
             {
-                console.log("got it, leaving them alone.");
-                resolve();
+                console.log('got it, leaving them alone.');
+                resolve(false);
             }
         });
     });
 }
 
 async function getUnpushedCommits() {
-    const unpushedCommitOptions = {from: "origin/master", to: "HEAD"};
+    const unpushedCommitOptions = {from: 'origin/master', to: 'HEAD'};
     return new Promise(resolve => {
         simpleGit.log(unpushedCommitOptions, (err, log) => {
-            console.log("Here are your local commits: ");
+            console.log('Here are your local commits: ');
             for (const commit of log.all) {
                 console.log(commit.message);
             }
@@ -43,23 +53,25 @@ async function getUnpushedCommits() {
 async function getSectionContent(sectionName) {
     return new Promise(resolve => {
         rl.question(`Please enter the ${sectionName} this push includes (comma-separated list): `, (answer) => {
-            resolve(answer.split(","));
+            resolve(answer.split(','));
         });
     });
 }
 
-async function getReleaseNotesAsString() {
+async function getReleaseNotesAsString(clearReleaseNotes, pathToReleaseNotes) {
     return new Promise(resolve => {
-        fs.readFile('./release-notes-orig.html', 'utf8', (err,data) => {
+        const fileToRead = clearReleaseNotes ? './release-notes-orig.html' : `${pathToReleaseNotes}\\release-notes.component.html`;
+        console.log('File to read from: ', fileToRead);
+        fs.readFile(fileToRead, 'utf8', (err,data) => {
+            console.log('Got release notes!');
             resolve(data);
         });
     });
 }
 
-async function writeReleaseNotes(text) {
+async function writeReleaseNotes(pathToReleaseNotes, text) {
     return new Promise(resolve => {
-        fs.writeFile('./release-notes-done.html', text, (err) => {
-            console.log("release notes have been updated!");
+        fs.writeFile(`${pathToReleaseNotes}\\release-notes.component.html`, text, (err) => {
             resolve();
         });
     });
@@ -86,34 +98,38 @@ async function updateReleaseNotes(releaseNotesString, resolvedIssuesItems, enhan
 }
 
 async function pushToRemote() {
-    simpleGit.add('*')
-        .commit("updated release notes with help from whats-new")
-        .push('origin', 'master');
+    return new Promise(resolve => {
+        simpleGit.add('*')
+            .commit('updated release notes with help from whats-new')
+            // TODO: push should be automated?
+            // .push('origin', 'master')
+            .exec(() => {
+                resolve();
+            });
+    });
 }
 
-// TODO: read release notes from WORKING DIRECTORY of git project!!!
 async function main() {
-    await getShouldClearReleaseNotes();
+    const pathToReleaseNotes = await getPathToReleaseNotes();
+    const clearReleaseNotes = await getShouldClearReleaseNotes();
+
     await getUnpushedCommits();
 
-    const resolvedIssuesList = await getSectionContent("resolved issues");
-    const enhancementsList = await getSectionContent("enhancements");
-    const behavioralChangesList = await getSectionContent("behavioral changes");
+    const resolvedIssuesList = await getSectionContent('resolved issues');
+    const enhancementsList = await getSectionContent('enhancements');
+    const behavioralChangesList = await getSectionContent('behavioral changes');
 
-    const releaseNotesString = await getReleaseNotesAsString();
+    const releaseNotesString = await getReleaseNotesAsString(pathToReleaseNotes, clearReleaseNotes);
 
-    // update release-notes.html
     const newReleaseNotesString = await updateReleaseNotes(releaseNotesString, resolvedIssuesList, enhancementsList, behavioralChangesList);
-    await writeReleaseNotes(newReleaseNotesString);
+    await writeReleaseNotes(pathToReleaseNotes, newReleaseNotesString);
+    console.log("done updating release notes");
 
-    // prompt for git push
     await pushToRemote();
+    console.log("all pushed! stopping now");
 
     rl.close();
     process.stdin.destroy();
 }
 
 main();
-
-///////////////////////////////////////////////////////////
-// getVersionNumber();
