@@ -91,6 +91,7 @@ async function pushToRemote() {
         .push('origin', 'master');
 }
 
+// TODO: read release notes from WORKING DIRECTORY of git project!!!
 async function main() {
     await getShouldClearReleaseNotes();
     await getUnpushedCommits();
