@@ -1,53 +1,17 @@
 let setupUtilities = require('./setup');
-// let config = require('./config');
+let utilities = require('./utilities');
+let config = require('./config');
 
-// const readline = require('readline');
-// var rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
+const readline = require('readline');
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 // const workingDirPath = '../EquiTrack/';
 // const simpleGit = require('simple-git')(workingDirPath);
 
 // const fs = require('fs');
-
-
-// async function getPathToReleaseNotes() {
-//     return new Promise(resolve => {
-//         if(!config.pathToReleaseNotes) {
-//             rl.question('Where are your release notes? ', (answer) => {
-//                 config.pathToReleaseNotes = answer;
-//                 fs.writeFile('./config.json', JSON.stringify(config), (err) => {
-//                     if(err) {
-//                         console.log("error updating package config!");
-//                     }
-//                 });
-//                 resolve(answer);
-//             });
-//         }
-//         else {
-//              resolve(config.pathToReleaseNotes);
-//         }
-//     });
-// }
-
-// async function getShouldClearReleaseNotes() {
-//     return new Promise(resolve => {
-//         rl.question('Would you like to clear current content from release-notes? ', (answer) => {
-//             if(answer.toLocaleLowerCase() === 'y') 
-//             {
-//                 console.log('ok! clearing now.');
-//                 resolve(true);
-//             }
-//             else 
-//             {
-//                 console.log('got it, leaving them alone.');
-//                 resolve(false);
-//             }
-//         });
-//     });
-// }
 
 // async function getUnpushedCommits() {
 //     const unpushedCommitOptions = {from: 'origin/master', to: 'HEAD'};
@@ -122,11 +86,10 @@ let setupUtilities = require('./setup');
 // }
 
 async function main() {
-    await setupUtilities.firstTimeSetup();
-    // console.log("done");
+    await setupUtilities.setupConfig(rl);
 
-    // const pathToReleaseNotes = await getPathToReleaseNotes();
-    // const clearReleaseNotes = await getShouldClearReleaseNotes();
+    const pathToReleaseNotes = config.pathToReleaseNotes;
+    const clearReleaseNotes = await utilities.getShouldClearReleaseNotes(rl);
 
     // await getUnpushedCommits();
 
@@ -143,8 +106,8 @@ async function main() {
     // await pushToRemote();
     // console.log("all pushed! stopping now");
 
-    // rl.close();
-    // process.stdin.destroy();
+    rl.close();
+    process.stdin.destroy();
 }
 
 main();
