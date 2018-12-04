@@ -1,4 +1,7 @@
 { 
     "isNewInstall": true,
-    "pathToReleaseNotes": null
+    "productName": null,
+    "creator": null,
+    "pathToReleaseNotes": null,
+    "versionNumber": null
 }

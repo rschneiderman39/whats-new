@@ -1,3 +1,7 @@
+// TODO:
+    // Change config?
+    // Tests!
+
 const setupUtilities = require('./setup');
 const utilities = require('./utilities');
 const config = require('./config');
@@ -22,7 +26,8 @@ async function main() {
 
     const releaseNotesString = await utilities.getReleaseNotesAsString(clearReleaseNotes, pathToReleaseNotes);
 
-    const newReleaseNotesString = await utilities.updateReleaseNotes(releaseNotesString, resolvedIssuesList, enhancementsList, behavioralChangesList);
+    const newReleaseNotesString = await utilities.updateReleaseNotes(releaseNotesString, config.productName, config.versionNumber, 
+        config.creator, resolvedIssuesList, enhancementsList, behavioralChangesList);
 
     await utilities.writeReleaseNotes(pathToReleaseNotes, newReleaseNotesString);
     await utilities.pushToRemote(thisShouldBeWorkingDirectory);

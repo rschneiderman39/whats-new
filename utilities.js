@@ -53,10 +53,14 @@ module.exports.getReleaseNotesAsString = async function (clearReleaseNotes, path
     });
 };
 
-module.exports.updateReleaseNotes = async function (releaseNotesString, resolvedIssuesItems, enhancementsItems, behavioralChangesItems) {
+module.exports.updateReleaseNotes = async function (releaseNotesString, productName, versionNumber, 
+    creator, resolvedIssuesItems, enhancementsItems, behavioralChangesItems) {
     return new Promise(resolve => {
         const cheerio = require('cheerio');
         const $ = cheerio.load(releaseNotesString);
+
+        $('#product-info').text(`${productName}&trade; ${versionNumber} Release Notes`);
+        $('.copyright').text(`Copyright &copy; 2018 ${creator}. All rights reserved.`);
 
         for (const item of resolvedIssuesItems) {
             $('#resolved-issues-list').append(`<li>${item}</li>\n`);
