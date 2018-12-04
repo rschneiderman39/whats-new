@@ -1,8 +1,1 @@
-{ 
-    "isNewInstall": true,
-    "pathToReleaseNotes": null,
-    "pathToReleaseNotesTemplate": null,
-    "selectorForResolvedIssues": null,
-    "selectorForEnhancements": null,
-    "selectorForBehavioralChanges": null
-}
+{"isNewInstall":false,"pathToReleaseNotes":"C:\\Git\\EquiTrack\\src\\app\\test.html"}

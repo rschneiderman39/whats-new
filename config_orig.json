@@ -1,8 +1,4 @@
 { 
     "isNewInstall": true,
-    "pathToReleaseNotes": null,
-    "pathToReleaseNotesTemplate": null,
-    "selectorForResolvedIssues": null,
-    "selectorForEnhancements": null,
-    "selectorForBehavioralChanges": null
+    "pathToReleaseNotes": null
 }
