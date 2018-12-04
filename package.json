@@ -4,7 +4,7 @@
   "description": "utility that helps update release notes based on local commit history",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,9 @@
     "cheerio": "^1.0.0-rc.2",
     "inquirer": "^6.2.0",
     "simple-git": "^1.107.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.3.0",
+    "chai": "4.2.0"
   }
 }
