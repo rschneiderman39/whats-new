@@ -7,8 +7,8 @@
     "test": "jasmine"
   },
   "bin": {
-    "wn": "./bin/whatsnew",
-    "whatsnew": "./bin/whatsnew"
+    "wn": "./index.js",
+    "whatsnew": "./index.js"
   },
   "repository": {
     "type": "git",
