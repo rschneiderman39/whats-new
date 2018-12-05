@@ -1,4 +1,5 @@
 // TODO:
+    // Add option to watch another directory
     // Change config?
     // Tests!
 
