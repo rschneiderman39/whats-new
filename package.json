@@ -2,7 +2,7 @@
   "name": "whats-new",
   "version": "1.0.0",
   "description": "utility that helps update release notes based on local commit history",
-  "main": "./bin/whatsnew",
+  "main": "./index.js",
   "scripts": {
     "test": "jasmine"
   },
