@@ -21,10 +21,10 @@ async function main() {
     const clearReleaseNotes = await utilities.getShouldClearReleaseNotes(rl);
     const pathToReleaseNotes = config.pathToReleaseNotes;
 
-    const thisShouldBeWorkingDirectory = 'C:\\Git\\Learning\\EquiTrack\\';
+    // const thisShouldBeWorkingDirectory = 'C:\\Git\\Learning\\EquiTrack\\';
     const workingDirectory = process.cwd();
 
-    await utilities.getUnpushedCommits(thisShouldBeWorkingDirectory);
+    await utilities.getUnpushedCommits(workingDirectory);
 
     const resolvedIssuesList = await utilities.getSectionContent(rl, 'resolved issues');
     const enhancementsList = await utilities.getSectionContent(rl, 'enhancements');
@@ -37,7 +37,7 @@ async function main() {
 
     await utilities.writeReleaseNotes(pathToReleaseNotes, newReleaseNotesString);
 
-    await utilities.pushToRemote(thisShouldBeWorkingDirectory);
+    await utilities.pushToRemote(workingDirectory);
 
     rl.close();
     process.stdin.destroy();

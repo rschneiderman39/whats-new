@@ -20,7 +20,7 @@ module.exports.setupConfig = async function(rl) {
 
     config.versionNumber = await getConfigItem(rl, questions.versionNumber);
 
-    fs.writeFile('./config.json', JSON.stringify(config), (err) => {
+    fs.writeFile(`${process.cwd()}\\node_modules\\whats-new\\config.json`, JSON.stringify(config), (err) => {
         if(err) {
             console.log("error updating package config!");
         }
