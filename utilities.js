@@ -45,8 +45,10 @@ module.exports.getSectionContent = async function (rl, sectionName) {
 module.exports.getReleaseNotesAsString = async function (clearReleaseNotes, pathToReleaseNotes) {
     const fs = require('fs');
 
+    const fileToRead = clearReleaseNotes ? `${process.cwd()}\\node_modules\\whats-new\\release-notes-orig.html`:
+        pathToReleaseNotes;
+
     return new Promise(resolve => {
-        const fileToRead = clearReleaseNotes ? './release-notes-orig.html' : pathToReleaseNotes;
         fs.readFile(fileToRead, 'utf8', (err,data) => {
             resolve(data);
         });

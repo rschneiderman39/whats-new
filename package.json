@@ -2,9 +2,13 @@
   "name": "whats-new",
   "version": "1.0.0",
   "description": "utility that helps update release notes based on local commit history",
-  "main": "index.ts",
+  "main": "./bin/whatsnew",
   "scripts": {
     "test": "jasmine"
+  },
+  "bin": {
+    "wn": "./bin/whatsnew",
+    "whatsnew": "./bin/whatsnew"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "inquirer": "^6.2.0",
+    "pkg": "^4.3.5",
     "simple-git": "^1.107.0"
   },
   "devDependencies": {

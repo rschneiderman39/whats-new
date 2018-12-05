@@ -10,6 +10,8 @@ module.exports.setupConfig = async function(rl) {
     const config = require('./config');
     
     if(config.isNewInstall) { 
+        console.log("WELCOME! Let's get to know each other!");
+
         config.isNewInstall = false;
         config.productName = await getConfigItem(rl, questions.productName);
         config.creator = await getConfigItem(rl, questions.creator);
