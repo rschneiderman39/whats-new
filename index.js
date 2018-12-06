@@ -1,10 +1,9 @@
+#!/usr/bin/env node
+
 // TODO:
     // Add option to watch another directory
     // Change config?
     // Tests!
-
-// package .exe
-// pkg index.js --output bin/whatsnew.exe
 
 const setupUtilities = require('./setup');
 const utilities = require('./utilities');
@@ -16,13 +15,11 @@ const rl = readline.createInterface({
 });
 
 async function main() {
-    console.log(__dirname);
     await setupUtilities.setupConfig(rl);
 
     const clearReleaseNotes = await utilities.getShouldClearReleaseNotes(rl);
     const pathToReleaseNotes = config.pathToReleaseNotes;
 
-    // const thisShouldBeWorkingDirectory = 'C:\\Git\\Learning\\EquiTrack\\';
     const workingDirectory = process.cwd();
 
     await utilities.getUnpushedCommits(workingDirectory);

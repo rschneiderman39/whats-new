@@ -2,7 +2,8 @@ const questions = {
     productName: "What is the name of your product? ",
     versionNumber: "What version are you on? ",
     creator: "Who is the creator? ",
-    releaseNotes: 'Where is your release notes file? (ex - C:\\User\\Git\\MyProject\\release-notes.html) ',
+    releaseNotes: 'Where is your release notes file? (ex - C:\\User\\MyProject\\release-notes.html) ',
+    //reposToWatch: "Enter the absolute paths to all repositories I should track for you (comma separated) "
 };
 
 module.exports.setupConfig = async function(rl) {
@@ -16,11 +17,12 @@ module.exports.setupConfig = async function(rl) {
         config.productName = await getConfigItem(rl, questions.productName);
         config.creator = await getConfigItem(rl, questions.creator);
         config.pathToReleaseNotes = await getConfigItem(rl, questions.releaseNotes);
+        //config.reposToWatch = await getConfigItem(rl, questions.reposToWatch);
     }
 
     config.versionNumber = await getConfigItem(rl, questions.versionNumber);
 
-    fs.writeFile(`${process.cwd()}\\node_modules\\whats-new\\config.json`, JSON.stringify(config), (err) => {
+    fs.writeFile(`${__dirname}\\config.json`, JSON.stringify(config), (err) => {
         if(err) {
             console.log("error updating package config!");
         }
