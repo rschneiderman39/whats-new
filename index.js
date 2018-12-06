@@ -16,10 +16,10 @@ const rl = readline.createInterface({
 async function main() {
     const workingDirectory = process.cwd();
 
-    await setupUtilities.setupConfig(rl);
+    const isNewInstall = await setupUtilities.setupConfig(rl);
     const config = require(`${process.cwd()}\\whats-new-config.json`);
 
-    const clearReleaseNotes = await utilities.getShouldClearReleaseNotes(rl);
+    const clearReleaseNotes = isNewInstall ? true : await utilities.getShouldClearReleaseNotes(rl);
     const pathToReleaseNotes = config.pathToReleaseNotes;
 
     await utilities.getUnpushedCommits(workingDirectory);

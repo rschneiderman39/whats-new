@@ -12,9 +12,13 @@ module.exports.setupConfig = async function(rl) {
     const chalk = require('chalk');
     const fs = require('fs');
 
+    let newInstall = false; 
+
     await getConfigFile();
 
     if(config.isNewInstall) { 
+        newInstall = true;
+
         console.log(chalk.magenta.underline.bold("Welcome! Let's get to know each other... \n"));
 
         config.isNewInstall = false;
@@ -24,7 +28,6 @@ module.exports.setupConfig = async function(rl) {
 
         let repos = await getConfigItem(rl, questions.reposToWatch);
         if(repos.trim().length === 0) {
-            console.log('nada');
             config.reposToWatch = [];
         } else {
             config.reposToWatch = repos.split(',');
@@ -38,7 +41,7 @@ module.exports.setupConfig = async function(rl) {
             if(err) {
                 console.log("error updating config!");
             }
-            resolve();
+            resolve(newInstall);
         });
     });
 }
