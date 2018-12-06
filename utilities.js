@@ -13,8 +13,8 @@ module.exports.getShouldClearReleaseNotes = async function (rl) {
     });
 };
 
-module.exports.getUnpushedCommits = async function (workingDirPath) {
-    const simpleGit = require('simple-git')(workingDirPath);
+module.exports.getUnpushedCommits = async function (pathToRepo) {
+    const simpleGit = require('simple-git')(pathToRepo);
     const unpushedCommitOptions = {from: 'origin/master', to: 'HEAD'};
 
     return new Promise(resolve => {

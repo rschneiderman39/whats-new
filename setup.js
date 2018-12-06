@@ -3,36 +3,71 @@ const questions = {
     versionNumber: "What version are you on? ",
     creator: "Who is the creator? ",
     releaseNotes: 'Where is your release notes file? (ex - C:\\User\\MyProject\\release-notes.html) ',
-    //reposToWatch: "Enter the absolute paths to all repositories I should track for you (comma separated) "
+    reposToWatch: "Enter (comma separated) absolute paths to any other repos you would like to watch:  "
 };
 
+let config;
+
 module.exports.setupConfig = async function(rl) {
+    const chalk = require('chalk');
     const fs = require('fs');
-    const config = require('./config');
-    
+
+    await getConfigFile();
+
     if(config.isNewInstall) { 
-        console.log("WELCOME! Let's get to know each other!");
+        console.log(chalk.magenta.underline.bold("Welcome! Let's get to know each other... \n"));
 
         config.isNewInstall = false;
         config.productName = await getConfigItem(rl, questions.productName);
         config.creator = await getConfigItem(rl, questions.creator);
         config.pathToReleaseNotes = await getConfigItem(rl, questions.releaseNotes);
-        //config.reposToWatch = await getConfigItem(rl, questions.reposToWatch);
+
+        let repos = await getConfigItem(rl, questions.reposToWatch);
+        if(repos.trim().length === 0) {
+            console.log('nada');
+            config.reposToWatch = [];
+        } else {
+            config.reposToWatch = repos.split(',');
+        }
     }
 
     config.versionNumber = await getConfigItem(rl, questions.versionNumber);
 
-    fs.writeFile(`${__dirname}\\config.json`, JSON.stringify(config), (err) => {
-        if(err) {
-            console.log("error updating package config!");
-        }
+    return new Promise(resolve => {
+        fs.writeFile(`${process.cwd()}\\whats-new-config.json`, JSON.stringify(config), (err) => {
+            if(err) {
+                console.log("error updating config!");
+            }
+            resolve();
+        });
     });
 }
 
 async function getConfigItem(rl, question) {
+    const chalk = require('chalk');
+
     return new Promise(resolve => {
-        rl.question(question, (answer) => {
+        rl.question(chalk.cyanBright(question), (answer) => {
             resolve(answer);
         });
+    });
+}
+
+async function getConfigFile() {
+    const localConfigPath = `${process.cwd()}\\whats-new-config.json`;
+
+    return new Promise(resolve => {
+        const fs = require('fs');
+
+        fs.access(localConfigPath, fs.F_OK, (err) => {
+            if (err) {
+                config = require(`${__dirname}\\config.json`);
+                resolve();
+
+            } else {
+                config = require(`${process.cwd()}\\whats-new-config.json`);
+                resolve();
+            }
+        }); 
     });
 }
