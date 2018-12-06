@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 // TODO:
+    // One config per project 'whatsnew --init'?
     // Add option to watch another directory
     // Change config?
     // Tests!
